@@ -8,7 +8,6 @@ build:
 
 run:
 	@cp config-local.json config.json
-	@swag init
 	@goose -env=development up
 	@go build -o app
 	@nohup ./app &

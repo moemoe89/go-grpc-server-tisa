@@ -4,7 +4,7 @@
 
 # practicing-grpc-server-golang #
 
-Practicing GRPC Using Golang (Gin Gonic Framework) as Programming Language, PostgreSQL as Database
+Practicing GRPC Server using Golang as Programming Language, PostgreSQL as Database
 
 ## Directory structure
 Your project directory structure should look like this
