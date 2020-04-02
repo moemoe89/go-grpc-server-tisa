@@ -49,6 +49,7 @@ func main() {
 
 	server := grpc.NewServer()
 	usrGrpc.NewAUserServerGrpc(server, userSvc)
+
 	fmt.Printf("Listening gRPC server on: %s\n", conf.Configuration.Port)
 	err = server.Serve(list)
 	if err != nil {

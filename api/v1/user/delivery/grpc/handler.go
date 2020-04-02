@@ -10,7 +10,7 @@ import (
 	"github.com/moemoe89/practicing-grpc-server-golang/api/v1/api_struct/form"
 	"github.com/moemoe89/practicing-grpc-server-golang/api/v1/api_struct/model"
 	usr "github.com/moemoe89/practicing-grpc-server-golang/api/v1/user"
-	usrGrpc "github.com/moemoe89/practicing-grpc-server-golang/api/v1/user/delivery/grpc/proto"
+	usrProto "github.com/moemoe89/practicing-grpc-server-golang/api/v1/user/delivery/grpc/proto"
 
 	"context"
 	"errors"
@@ -19,22 +19,23 @@ import (
 
 	"github.com/moemoe89/go-helpers"
 	"github.com/rs/xid"
+	ts "github.com/golang/protobuf/ptypes/timestamp"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
-	ts "github.com/golang/protobuf/ptypes/timestamp"
 )
 
 type server struct {
 	svc usr.Service
 }
 
-func NewAUserServerGrpc(s *grpc.Server, svc usr.Service) {
-	handler := &server{svc}
-	usrGrpc.RegisterUserServiceServer(s, handler)
+func NewAUserServerGrpc(s *grpc.Server, svc usr.Service) *server {
+	usrCtrl := &server{svc}
+	usrProto.RegisterUserServiceServer(s, usrCtrl)
 	reflection.Register(s)
+	return usrCtrl
 }
 
-func (s *server) Create(c context.Context, r *usrGrpc.UserCreateReq) (*usrGrpc.User, error) {
+func (s *server) Create(c context.Context, r *usrProto.UserCreateReq) (*usrProto.User, error) {
 	req := &form.UserForm{}
 	req.ID = xid.New().String()
 	req.Name = r.GetName()
@@ -60,7 +61,7 @@ func (s *server) Create(c context.Context, r *usrGrpc.UserCreateReq) (*usrGrpc.U
 		Seconds: user.UpdatedAt.Unix(),
 	}
 
-	resp := &usrGrpc.User{
+	resp := &usrProto.User{
 		Id:        user.ID,
 		Name:      user.Name,
 		Phone:     user.Phone,
@@ -73,7 +74,7 @@ func (s *server) Create(c context.Context, r *usrGrpc.UserCreateReq) (*usrGrpc.U
 	return resp, nil
 }
 
-func(s *server) List(c context.Context, r *usrGrpc.UsersReq) (*usrGrpc.Users, error) {
+func(s *server) List(c context.Context, r *usrProto.UsersReq) (*usrProto.Users, error) {
 	userModel := model.UserModel{}
 
 	offset, perPage, showPage, err := helpers.PaginationSetter(r.GetPerPage(), r.GetPage())
@@ -140,7 +141,7 @@ func(s *server) List(c context.Context, r *usrGrpc.UsersReq) (*usrGrpc.Users, er
 
 	totalPage := int(math.Ceil(float64(count) / float64(perPage)))
 
-	var users []*usrGrpc.User
+	var users []*usrProto.User
 	for _, user := range usersRaw {
 		createdAt := &ts.Timestamp{
 			Seconds: user.CreatedAt.Unix(),
@@ -150,7 +151,7 @@ func(s *server) List(c context.Context, r *usrGrpc.UsersReq) (*usrGrpc.Users, er
 			Seconds: user.UpdatedAt.Unix(),
 		}
 
-		user := &usrGrpc.User{
+		user := &usrProto.User{
 			Id:        user.ID,
 			Name:      user.Name,
 			Phone:     user.Phone,
@@ -163,7 +164,7 @@ func(s *server) List(c context.Context, r *usrGrpc.UsersReq) (*usrGrpc.Users, er
 		users = append(users, user)
 	}
 
-	resp := &usrGrpc.Users{
+	resp := &usrProto.Users{
 		Users:     users,
 		Page:      int64(showPage),
 		PerPage:   int64(perPage),
@@ -175,7 +176,7 @@ func(s *server) List(c context.Context, r *usrGrpc.UsersReq) (*usrGrpc.Users, er
 }
 
 
-func(s *server) Detail(c context.Context, r *usrGrpc.UserIDReq) (*usrGrpc.User, error) {
+func(s *server) Detail(c context.Context, r *usrProto.UserIDReq) (*usrProto.User, error) {
 	id := r.GetId()
 	user, _, err := s.svc.Detail(id, model.UserSelectField)
 	if err != nil {
@@ -190,7 +191,7 @@ func(s *server) Detail(c context.Context, r *usrGrpc.UserIDReq) (*usrGrpc.User, 
 		Seconds: user.UpdatedAt.Unix(),
 	}
 
-	resp := &usrGrpc.User{
+	resp := &usrProto.User{
 		Id:        user.ID,
 		Name:      user.Name,
 		Phone:     user.Phone,
@@ -204,7 +205,7 @@ func(s *server) Detail(c context.Context, r *usrGrpc.UserIDReq) (*usrGrpc.User, 
 }
 
 
-func(s *server) Update(c context.Context,  r*usrGrpc.UserUpdateReq) (*usrGrpc.User, error) {
+func(s *server) Update(c context.Context,  r*usrProto.UserUpdateReq) (*usrProto.User, error) {
 	id := r.GetId()
 	user, _, err := s.svc.Detail(id, "id")
 	if err != nil {
@@ -235,7 +236,7 @@ func(s *server) Update(c context.Context,  r*usrGrpc.UserUpdateReq) (*usrGrpc.Us
 		Seconds: user.UpdatedAt.Unix(),
 	}
 
-	resp := &usrGrpc.User{
+	resp := &usrProto.User{
 		Id:        user.ID,
 		Name:      user.Name,
 		Phone:     user.Phone,
@@ -249,14 +250,14 @@ func(s *server) Update(c context.Context,  r*usrGrpc.UserUpdateReq) (*usrGrpc.Us
 }
 
 
-func(s *server) Delete(c context.Context,  r *usrGrpc.UserIDReq) (*usrGrpc.UserIDReq, error) {
+func(s *server) Delete(c context.Context,  r *usrProto.UserIDReq) (*usrProto.UserIDReq, error) {
 	id := r.GetId()
 	_, err := s.svc.Delete(id)
 	if err != nil {
 		return nil, err
 	}
 
-	resp := &usrGrpc.UserIDReq{
+	resp := &usrProto.UserIDReq{
 		Id: id,
 	}
 
