@@ -50,7 +50,7 @@ inuit_rsa.pub
 *.iml
 
 # binary
-practicing-grpc-server-golang
+go-grpc-server-tisa
 app
 
 # out

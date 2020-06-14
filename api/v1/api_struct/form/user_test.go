@@ -7,7 +7,7 @@
 package form_test
 
 import (
-	"github.com/moemoe89/practicing-grpc-server-golang/api/v1/api_struct/form"
+	"github.com/moemoe89/go-grpc-server-tisa/api/v1/api_struct/form"
 
 	"testing"
 

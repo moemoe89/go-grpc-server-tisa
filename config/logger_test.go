@@ -7,7 +7,7 @@
 package config_test
 
 import (
-	"github.com/moemoe89/practicing-grpc-server-golang/config"
+	"github.com/moemoe89/go-grpc-server-tisa/config"
 
 	"testing"
 

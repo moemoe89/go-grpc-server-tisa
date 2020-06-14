@@ -1,8 +1,8 @@
-[![Build Status](https://travis-ci.org/moemoe89/practicing-grpc-server-golang.svg?branch=master)](https://travis-ci.org/moemoe89/practicing-grpc-server-golang)
-[![codecov](https://codecov.io/gh/moemoe89/practicing-grpc-server-golang/branch/master/graph/badge.svg)](https://codecov.io/gh/moemoe89/practicing-grpc-server-golang)
-[![Go Report Card](https://goreportcard.com/badge/github.com/moemoe89/practicing-grpc-server-golang)](https://goreportcard.com/report/github.com/moemoe89/practicing-grpc-server-golang)
+[![Build Status](https://travis-ci.org/moemoe89/go-grpc-server-tisa.svg?branch=master)](https://travis-ci.org/moemoe89/go-grpc-server-tisa)
+[![codecov](https://codecov.io/gh/moemoe89/go-grpc-server-tisa/branch/master/graph/badge.svg)](https://codecov.io/gh/moemoe89/go-grpc-server-tisa)
+[![Go Report Card](https://goreportcard.com/badge/github.com/moemoe89/go-grpc-server-tisa)](https://goreportcard.com/report/github.com/moemoe89/go-grpc-server-tisa)
 
-# practicing-grpc-server-golang #
+# GO-GRPC-SERVER-TISA #
 
 Practicing GRPC Server using Golang as Programming Language, PostgreSQL as Database
 
@@ -13,7 +13,7 @@ Your project directory structure should look like this
   |
   +--+ src/github.com/moemoe89
   |  |
-  |  +--+ practicing-grpc-server-golang/
+  |  +--+ go-grpc-server-tisa/
   |     |
   |     +--+ main.go
   |        + api/
@@ -40,7 +40,7 @@ Your project directory structure should look like this
 $ mkdir -p src/github.com/moemoe89
 $ cd src/github.com/moemoe89
 $ git clone <url>
-$ mv <cloned directory> practicing-grpc-server-golang
+$ mv <cloned directory> go-grpc-server-tisa
 ```
 
 ## Running Migration
@@ -49,7 +49,7 @@ $ mv <cloned directory> practicing-grpc-server-golang
 * Change database configuration on dbconf.yml like `dialect` and `dsn` for each environtment
 * Do the following command
 ```
-$ cd $GOPATH/src/github.com/moemoe89/practicing-grpc-server-golang
+$ cd $GOPATH/src/github.com/moemoe89/go-grpc-server-tisa
 $ goose -env=development up
 ```
 
@@ -60,17 +60,17 @@ $ cp config-sample.json config-local.json
 ```
 Build
 ```
-$ cd $GOPATH/src/github.com/moemoe89/practicing-grpc-server-golang
+$ cd $GOPATH/src/github.com/moemoe89/go-grpc-server-tisa
 $ make build
 ```
 Run
 ```
-$ cd $GOPATH/src/github.com/moemoe89/practicing-grpc-server-golang
+$ cd $GOPATH/src/github.com/moemoe89/go-grpc-server-tisa
 $ make run
 ```
 Stop
 ```
-$ cd $GOPATH/src/github.com/moemoe89/practicing-grpc-server-golang
+$ cd $GOPATH/src/github.com/moemoe89/go-grpc-server-tisa
 $ make stop
 ```
 Make config file for docker :
@@ -79,17 +79,17 @@ $ cp config-sample.json config-docker.json
 ```
 Docker Build
 ```
-$ cd $GOPATH/src/github.com/moemoe89/practicing-grpc-server-golang
+$ cd $GOPATH/src/github.com/moemoe89/go-grpc-server-tisa
 $ make docker-build
 ```
 Docker Up
 ```
-$ cd $GOPATH/src/github.com/moemoe89/practicing-grpc-server-golang
+$ cd $GOPATH/src/github.com/moemoe89/go-grpc-server-tisa
 $ make docker-up
 ```
 Docker Down
 ```
-$ cd $GOPATH/src/github.com/moemoe89/practicing-grpc-server-golang
+$ cd $GOPATH/src/github.com/moemoe89/go-grpc-server-tisa
 $ make docker-down
 ```
 

@@ -7,7 +7,7 @@
 package user
 
 import (
-	"github.com/moemoe89/practicing-grpc-server-golang/api/v1/api_struct/model"
+	"github.com/moemoe89/go-grpc-server-tisa/api/v1/api_struct/model"
 
 	"fmt"
 

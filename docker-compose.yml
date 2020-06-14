@@ -3,8 +3,8 @@ services:
   app:
     build: .
     volumes:
-      - .:/go/src/github.com/moemoe89/practicing-grpc-server-golang
-    container_name: golang_grpc_api
+      - .:/go/src/github.com/moemoe89/go-grpc-server-tisa
+    container_name: go_grpc_server_tisa
     restart: always
     ports:
       - "8792:8792"

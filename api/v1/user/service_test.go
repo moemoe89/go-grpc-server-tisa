@@ -7,11 +7,11 @@
 package user_test
 
 import (
-	"github.com/moemoe89/practicing-grpc-server-golang/api/v1/api_struct/form"
-	"github.com/moemoe89/practicing-grpc-server-golang/api/v1/api_struct/model"
-	"github.com/moemoe89/practicing-grpc-server-golang/api/v1/user"
-	"github.com/moemoe89/practicing-grpc-server-golang/api/v1/user/mocks"
-	"github.com/moemoe89/practicing-grpc-server-golang/config"
+	"github.com/moemoe89/go-grpc-server-tisa/api/v1/api_struct/form"
+	"github.com/moemoe89/go-grpc-server-tisa/api/v1/api_struct/model"
+	"github.com/moemoe89/go-grpc-server-tisa/api/v1/user"
+	"github.com/moemoe89/go-grpc-server-tisa/api/v1/user/mocks"
+	"github.com/moemoe89/go-grpc-server-tisa/config"
 
 	"database/sql"
 	"errors"

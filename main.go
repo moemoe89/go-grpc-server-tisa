@@ -7,9 +7,9 @@
 package main
 
 import (
-	"github.com/moemoe89/practicing-grpc-server-golang/api/v1/user"
-	usrGrpc "github.com/moemoe89/practicing-grpc-server-golang/api/v1/user/delivery/grpc"
-	conf "github.com/moemoe89/practicing-grpc-server-golang/config"
+	"github.com/moemoe89/go-grpc-server-tisa/api/v1/user"
+	usrGrpc "github.com/moemoe89/go-grpc-server-tisa/api/v1/user/delivery/grpc"
+	conf "github.com/moemoe89/go-grpc-server-tisa/config"
 
 	"fmt"
 	"net"

@@ -7,10 +7,10 @@
 package grpc
 
 import (
-	"github.com/moemoe89/practicing-grpc-server-golang/api/v1/api_struct/form"
-	"github.com/moemoe89/practicing-grpc-server-golang/api/v1/api_struct/model"
-	usr "github.com/moemoe89/practicing-grpc-server-golang/api/v1/user"
-	usrProto "github.com/moemoe89/practicing-grpc-server-golang/api/v1/user/delivery/grpc/proto"
+	"github.com/moemoe89/go-grpc-server-tisa/api/v1/api_struct/form"
+	"github.com/moemoe89/go-grpc-server-tisa/api/v1/api_struct/model"
+	usr "github.com/moemoe89/go-grpc-server-tisa/api/v1/user"
+	usrProto "github.com/moemoe89/go-grpc-server-tisa/api/v1/user/delivery/grpc/proto"
 
 	"context"
 	"errors"

@@ -1,4 +1,4 @@
-module github.com/moemoe89/practicing-grpc-server-golang
+module github.com/moemoe89/go-grpc-server-tisa
 
 go 1.13
 
