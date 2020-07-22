@@ -12,7 +12,7 @@ type Service struct {
 }
 
 // Create provides a mock function with given fields: req
-func (_m *Service) Create(req *form.UserForm) (*model.UserModel, int, error) {
+func (_m *Service) Create(req *form.UserForm) (*model.UserModel, error) {
 	ret := _m.Called(req)
 
 	var r0 *model.UserModel
@@ -24,37 +24,9 @@ func (_m *Service) Create(req *form.UserForm) (*model.UserModel, int, error) {
 		}
 	}
 
-	var r1 int
-	if rf, ok := ret.Get(1).(func(*form.UserForm) int); ok {
-		r1 = rf(req)
-	} else {
-		r1 = ret.Get(1).(int)
-	}
-
-	var r2 error
-	if rf, ok := ret.Get(2).(func(*form.UserForm) error); ok {
-		r2 = rf(req)
-	} else {
-		r2 = ret.Error(2)
-	}
-
-	return r0, r1, r2
-}
-
-// Delete provides a mock function with given fields: id
-func (_m *Service) Delete(id string) (int, error) {
-	ret := _m.Called(id)
-
-	var r0 int
-	if rf, ok := ret.Get(0).(func(string) int); ok {
-		r0 = rf(id)
-	} else {
-		r0 = ret.Get(0).(int)
-	}
-
 	var r1 error
-	if rf, ok := ret.Get(1).(func(string) error); ok {
-		r1 = rf(id)
+	if rf, ok := ret.Get(1).(func(*form.UserForm) error); ok {
+		r1 = rf(req)
 	} else {
 		r1 = ret.Error(1)
 	}
@@ -62,8 +34,22 @@ func (_m *Service) Delete(id string) (int, error) {
 	return r0, r1
 }
 
+// Delete provides a mock function with given fields: id
+func (_m *Service) Delete(id string) error {
+	ret := _m.Called(id)
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(string) error); ok {
+		r0 = rf(id)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
 // Detail provides a mock function with given fields: id, selectField
-func (_m *Service) Detail(id string, selectField string) (*model.UserModel, int, error) {
+func (_m *Service) Detail(id string, selectField string) (*model.UserModel, error) {
 	ret := _m.Called(id, selectField)
 
 	var r0 *model.UserModel
@@ -75,25 +61,18 @@ func (_m *Service) Detail(id string, selectField string) (*model.UserModel, int,
 		}
 	}
 
-	var r1 int
-	if rf, ok := ret.Get(1).(func(string, string) int); ok {
+	var r1 error
+	if rf, ok := ret.Get(1).(func(string, string) error); ok {
 		r1 = rf(id, selectField)
 	} else {
-		r1 = ret.Get(1).(int)
+		r1 = ret.Error(1)
 	}
 
-	var r2 error
-	if rf, ok := ret.Get(2).(func(string, string) error); ok {
-		r2 = rf(id, selectField)
-	} else {
-		r2 = ret.Error(2)
-	}
-
-	return r0, r1, r2
+	return r0, r1
 }
 
 // List provides a mock function with given fields: filter, filterCount, where, orderBy, selectField
-func (_m *Service) List(filter map[string]interface{}, filterCount map[string]interface{}, where string, orderBy string, selectField string) ([]*model.UserModel, int, int, error) {
+func (_m *Service) List(filter map[string]interface{}, filterCount map[string]interface{}, where string, orderBy string, selectField string) ([]*model.UserModel, int, error) {
 	ret := _m.Called(filter, filterCount, where, orderBy, selectField)
 
 	var r0 []*model.UserModel
@@ -112,25 +91,18 @@ func (_m *Service) List(filter map[string]interface{}, filterCount map[string]in
 		r1 = ret.Get(1).(int)
 	}
 
-	var r2 int
-	if rf, ok := ret.Get(2).(func(map[string]interface{}, map[string]interface{}, string, string, string) int); ok {
+	var r2 error
+	if rf, ok := ret.Get(2).(func(map[string]interface{}, map[string]interface{}, string, string, string) error); ok {
 		r2 = rf(filter, filterCount, where, orderBy, selectField)
 	} else {
-		r2 = ret.Get(2).(int)
+		r2 = ret.Error(2)
 	}
 
-	var r3 error
-	if rf, ok := ret.Get(3).(func(map[string]interface{}, map[string]interface{}, string, string, string) error); ok {
-		r3 = rf(filter, filterCount, where, orderBy, selectField)
-	} else {
-		r3 = ret.Error(3)
-	}
-
-	return r0, r1, r2, r3
+	return r0, r1, r2
 }
 
 // Update provides a mock function with given fields: req, id
-func (_m *Service) Update(req *form.UserForm, id string) (*model.UserModel, int, error) {
+func (_m *Service) Update(req *form.UserForm, id string) (*model.UserModel, error) {
 	ret := _m.Called(req, id)
 
 	var r0 *model.UserModel
@@ -142,19 +114,12 @@ func (_m *Service) Update(req *form.UserForm, id string) (*model.UserModel, int,
 		}
 	}
 
-	var r1 int
-	if rf, ok := ret.Get(1).(func(*form.UserForm, string) int); ok {
+	var r1 error
+	if rf, ok := ret.Get(1).(func(*form.UserForm, string) error); ok {
 		r1 = rf(req, id)
 	} else {
-		r1 = ret.Get(1).(int)
+		r1 = ret.Error(1)
 	}
 
-	var r2 error
-	if rf, ok := ret.Get(2).(func(*form.UserForm, string) error); ok {
-		r2 = rf(req, id)
-	} else {
-		r2 = ret.Error(2)
-	}
-
-	return r0, r1, r2
+	return r0, r1
 }

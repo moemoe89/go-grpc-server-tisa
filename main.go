@@ -42,7 +42,7 @@ func main() {
 	userRepo := user.NewPostgresRepository(dbR, dbW)
 	userSvc := user.NewService(log, userRepo)
 
-	list, err := net.Listen("tcp", ":" + conf.Configuration.Port)
+	list, err := net.Listen("tcp", ":"+conf.Configuration.Port)
 	if err != nil {
 		panic(err)
 	}

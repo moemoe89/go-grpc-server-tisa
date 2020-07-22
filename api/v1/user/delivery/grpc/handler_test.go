@@ -6,15 +6,14 @@ import (
 	usrproto "github.com/moemoe89/go-grpc-server-tisa/api/v1/user/delivery/grpc/proto"
 	"github.com/moemoe89/go-grpc-server-tisa/api/v1/user/mocks"
 
-	"errors"
 	"context"
-	"net/http"
+	"errors"
 	"testing"
 
-	"github.com/stretchr/testify/assert"
-	"google.golang.org/grpc"
-	"github.com/stretchr/testify/mock"
 	"github.com/rs/xid"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/mock"
+	"google.golang.org/grpc"
 )
 
 func TestDeliveryCreateFailValidation(t *testing.T) {
@@ -35,7 +34,7 @@ func TestDeliveryCreateFailValidation(t *testing.T) {
 func TestDeliveryCreateFail(t *testing.T) {
 	server := grpc.NewServer()
 	mockService := new(mocks.Service)
-	mockService.On("Create", mock.AnythingOfType("*form.UserForm")).Return(nil, http.StatusInternalServerError, errors.New("Unexpected database error"))
+	mockService.On("Create", mock.AnythingOfType("*form.UserForm")).Return(nil, errors.New("Unexpected database error"))
 	usrCtrl := usrGrpc.NewAUserServerGrpc(server, mockService)
 
 	createUserRes, err := usrCtrl.Create(context.Background(), &usrproto.UserCreateReq{
@@ -59,7 +58,7 @@ func TestDeliveryCreateSuccess(t *testing.T) {
 
 	server := grpc.NewServer()
 	mockService := new(mocks.Service)
-	mockService.On("Create", mock.AnythingOfType("*form.UserForm")).Return(user, 0, nil)
+	mockService.On("Create", mock.AnythingOfType("*form.UserForm")).Return(user, nil)
 	usrCtrl := usrGrpc.NewAUserServerGrpc(server, mockService)
 
 	createUserRes, err := usrCtrl.Create(context.Background(), &usrproto.UserCreateReq{
@@ -101,7 +100,7 @@ func TestDeliveryList(t *testing.T) {
 
 	server := grpc.NewServer()
 	mockService := new(mocks.Service)
-	mockService.On("List", filter, filterCount, "WHERE deleted_at IS NULL AND name LIKE :name AND email LIKE :email AND phone LIKE :phone AND created_at >= :created_at_start AND created_at <= :created_at_end", "created_at DESC", model.UserSelectField).Return(users, 1, 0, nil)
+	mockService.On("List", filter, filterCount, "WHERE deleted_at IS NULL AND name LIKE :name AND email LIKE :email AND phone LIKE :phone AND created_at >= :created_at_start AND created_at <= :created_at_end", "created_at DESC", model.UserSelectField).Return(users, 1, nil)
 	usrCtrl := usrGrpc.NewAUserServerGrpc(server, mockService)
 
 	listUserRes, err := usrCtrl.List(context.Background(), &usrproto.UsersReq{
@@ -125,7 +124,7 @@ func TestDeliveryListFail(t *testing.T) {
 
 	server := grpc.NewServer()
 	mockService := new(mocks.Service)
-	mockService.On("List", filter, filterCount, "WHERE deleted_at IS NULL", "created_at DESC", model.UserSelectField).Return(nil, 0, http.StatusInternalServerError, errors.New("Oops! Something went wrong. Please try again later"))
+	mockService.On("List", filter, filterCount, "WHERE deleted_at IS NULL", "created_at DESC", model.UserSelectField).Return(nil, 0, errors.New("Oops! Something went wrong. Please try again later"))
 	usrCtrl := usrGrpc.NewAUserServerGrpc(server, mockService)
 
 	listUserRes, err := usrCtrl.List(context.Background(), &usrproto.UsersReq{
@@ -143,7 +142,7 @@ func TestDeliveryListFailPagination(t *testing.T) {
 
 	server := grpc.NewServer()
 	mockService := new(mocks.Service)
-	mockService.On("List", filter, filterCount, "WHERE deleted_at IS NULL", "created_at DESC", model.UserSelectField).Return(nil, 0, http.StatusInternalServerError, errors.New("Invalid parameter per_page: not an int"))
+	mockService.On("List", filter, filterCount, "WHERE deleted_at IS NULL", "created_at DESC", model.UserSelectField).Return(nil, 0, errors.New("Invalid parameter per_page: not an int"))
 	usrCtrl := usrGrpc.NewAUserServerGrpc(server, mockService)
 
 	listUserRes, err := usrCtrl.List(context.Background(), &usrproto.UsersReq{
@@ -156,7 +155,7 @@ func TestDeliveryListFailPagination(t *testing.T) {
 func TestDeliveryDetailFail(t *testing.T) {
 	server := grpc.NewServer()
 	mockService := new(mocks.Service)
-	mockService.On("Detail", mock.AnythingOfType("string"),  mock.AnythingOfType("string")).Return(nil, http.StatusInternalServerError, errors.New("Unexpected database error"))
+	mockService.On("Detail", mock.AnythingOfType("string"), mock.AnythingOfType("string")).Return(nil, errors.New("Unexpected database error"))
 	usrCtrl := usrGrpc.NewAUserServerGrpc(server, mockService)
 
 	detailUserRes, err := usrCtrl.Detail(context.Background(), &usrproto.UserIDReq{
@@ -177,7 +176,7 @@ func TestDeliveryDetailSuccess(t *testing.T) {
 
 	server := grpc.NewServer()
 	mockService := new(mocks.Service)
-	mockService.On("Detail", mock.AnythingOfType("string"),  mock.AnythingOfType("string")).Return(user, 0, nil)
+	mockService.On("Detail", mock.AnythingOfType("string"), mock.AnythingOfType("string")).Return(user, nil)
 	usrCtrl := usrGrpc.NewAUserServerGrpc(server, mockService)
 
 	detailUserRes, err := usrCtrl.Detail(context.Background(), &usrproto.UserIDReq{
@@ -199,7 +198,7 @@ func TestDeliveryUpdateFailValidation(t *testing.T) {
 	server := grpc.NewServer()
 	mockService := new(mocks.Service)
 	usrCtrl := usrGrpc.NewAUserServerGrpc(server, mockService)
-	mockService.On("Detail", mock.AnythingOfType("string"),  mock.AnythingOfType("string")).Return(user, 0, nil)
+	mockService.On("Detail", mock.AnythingOfType("string"), mock.AnythingOfType("string")).Return(user, nil)
 
 	updateUserRes, err := usrCtrl.Update(context.Background(), &usrproto.UserUpdateReq{
 		Id:      "id",
@@ -215,7 +214,7 @@ func TestDeliveryUpdateFailValidation(t *testing.T) {
 func TestDeliveryUpdateFailDetail(t *testing.T) {
 	server := grpc.NewServer()
 	mockService := new(mocks.Service)
-	mockService.On("Detail", mock.AnythingOfType("string"),  mock.AnythingOfType("string")).Return(nil, http.StatusInternalServerError, errors.New("Unexpected database error"))
+	mockService.On("Detail", mock.AnythingOfType("string"), mock.AnythingOfType("string")).Return(nil, errors.New("Unexpected database error"))
 	usrCtrl := usrGrpc.NewAUserServerGrpc(server, mockService)
 
 	updateUserRes, err := usrCtrl.Update(context.Background(), &usrproto.UserUpdateReq{
@@ -240,8 +239,8 @@ func TestDeliveryUpdateFail(t *testing.T) {
 
 	server := grpc.NewServer()
 	mockService := new(mocks.Service)
-	mockService.On("Detail", mock.AnythingOfType("string"),  mock.AnythingOfType("string")).Return(user, 0, nil)
-	mockService.On("Update", mock.AnythingOfType("*form.UserForm"), mock.AnythingOfType("string")).Return(nil, http.StatusInternalServerError, errors.New("Unexpected database error"))
+	mockService.On("Detail", mock.AnythingOfType("string"), mock.AnythingOfType("string")).Return(user, nil)
+	mockService.On("Update", mock.AnythingOfType("*form.UserForm"), mock.AnythingOfType("string")).Return(nil, errors.New("Unexpected database error"))
 	usrCtrl := usrGrpc.NewAUserServerGrpc(server, mockService)
 
 	updateUserRes, err := usrCtrl.Update(context.Background(), &usrproto.UserUpdateReq{
@@ -266,8 +265,8 @@ func TestDeliveryUpdateSuccess(t *testing.T) {
 
 	server := grpc.NewServer()
 	mockService := new(mocks.Service)
-	mockService.On("Detail", mock.AnythingOfType("string"),  mock.AnythingOfType("string")).Return(user, 0, nil)
-	mockService.On("Update", mock.AnythingOfType("*form.UserForm"), mock.AnythingOfType("string")).Return(user, 0, nil)
+	mockService.On("Detail", mock.AnythingOfType("string"), mock.AnythingOfType("string")).Return(user, nil)
+	mockService.On("Update", mock.AnythingOfType("*form.UserForm"), mock.AnythingOfType("string")).Return(user, nil)
 	usrCtrl := usrGrpc.NewAUserServerGrpc(server, mockService)
 
 	updateUserRes, err := usrCtrl.Update(context.Background(), &usrproto.UserUpdateReq{
@@ -284,7 +283,7 @@ func TestDeliveryUpdateSuccess(t *testing.T) {
 func TestDeliveryDeleteFail(t *testing.T) {
 	server := grpc.NewServer()
 	mockService := new(mocks.Service)
-	mockService.On("Delete", mock.AnythingOfType("string")).Return(http.StatusInternalServerError, errors.New("Unexpected database error"))
+	mockService.On("Delete", mock.AnythingOfType("string")).Return(errors.New("Unexpected database error"))
 	usrCtrl := usrGrpc.NewAUserServerGrpc(server, mockService)
 
 	_, err := usrCtrl.Delete(context.Background(), &usrproto.UserIDReq{
@@ -296,7 +295,7 @@ func TestDeliveryDeleteFail(t *testing.T) {
 func TestDeliveryDeleteSuccess(t *testing.T) {
 	server := grpc.NewServer()
 	mockService := new(mocks.Service)
-	mockService.On("Delete", mock.AnythingOfType("string")).Return(0, nil)
+	mockService.On("Delete", mock.AnythingOfType("string")).Return(nil)
 	usrCtrl := usrGrpc.NewAUserServerGrpc(server, mockService)
 
 	_, err := usrCtrl.Delete(context.Background(), &usrproto.UserIDReq{

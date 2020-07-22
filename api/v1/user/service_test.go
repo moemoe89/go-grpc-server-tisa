@@ -15,7 +15,6 @@ import (
 
 	"database/sql"
 	"errors"
-	"net/http"
 	"testing"
 	"time"
 
@@ -48,11 +47,10 @@ func TestServiceCreate(t *testing.T) {
 		mockRepo.On("Create", mockUser).Return(mockUser, nil).Once()
 		u := user.NewService(log, mockRepo)
 
-		userRow, status, err := u.Create(reqUser)
+		userRow, err := u.Create(reqUser)
 
 		assert.NoError(t, err)
 		assert.NotNil(t, userRow)
-		assert.Equal(t, 0, status)
 
 		mockRepo.AssertExpectations(t)
 	})
@@ -61,11 +59,10 @@ func TestServiceCreate(t *testing.T) {
 		mockRepo.On("Create", mockUser).Return(nil, errors.New("Unexpected database error")).Once()
 		u := user.NewService(log, mockRepo)
 
-		userRow, status, err := u.Create(reqUser)
+		userRow, err := u.Create(reqUser)
 
 		assert.Error(t, err)
 		assert.Nil(t, userRow)
-		assert.Equal(t, http.StatusInternalServerError, status)
 
 		mockRepo.AssertExpectations(t)
 	})
@@ -89,10 +86,9 @@ func TestServiceDelete(t *testing.T) {
 		mockRepo.On("Delete", mock.AnythingOfType("string")).Return(nil).Once()
 		u := user.NewService(log, mockRepo)
 
-		status, err := u.Delete(mockUser.ID)
+		err := u.Delete(mockUser.ID)
 
 		assert.NoError(t, err)
-		assert.Equal(t, 0, status)
 
 		mockRepo.AssertExpectations(t)
 	})
@@ -102,10 +98,9 @@ func TestServiceDelete(t *testing.T) {
 		mockRepo.On("Delete", mock.AnythingOfType("string")).Return(errors.New("Unexpected database error")).Once()
 		u := user.NewService(log, mockRepo)
 
-		status, err := u.Delete(mockUser.ID)
+		err := u.Delete(mockUser.ID)
 
 		assert.Error(t, err)
-		assert.Equal(t, http.StatusInternalServerError, status)
 
 		mockRepo.AssertExpectations(t)
 	})
@@ -115,10 +110,9 @@ func TestServiceDelete(t *testing.T) {
 
 		u := user.NewService(log, mockRepo)
 
-		status, err := u.Delete(mockUser.ID)
+		err := u.Delete(mockUser.ID)
 
 		assert.Error(t, err)
-		assert.Equal(t, http.StatusNotFound, status)
 
 		mockRepo.AssertExpectations(t)
 	})
@@ -127,10 +121,9 @@ func TestServiceDelete(t *testing.T) {
 		mockRepo.On("GetByID", mock.AnythingOfType("string"), "id").Return(nil, errors.New("Unexpected database error")).Once()
 		u := user.NewService(log, mockRepo)
 
-		status, err := u.Delete(mockUser.ID)
+		err := u.Delete(mockUser.ID)
 
 		assert.Error(t, err)
-		assert.Equal(t, http.StatusInternalServerError, status)
 
 		mockRepo.AssertExpectations(t)
 	})
@@ -154,11 +147,10 @@ func TestServiceDetail(t *testing.T) {
 		mockRepo.On("GetByID", mock.AnythingOfType("string"), "").Return(mockUser, nil).Once()
 		u := user.NewService(log, mockRepo)
 
-		userRow, status, err := u.Detail(mockUser.ID, "")
+		userRow, err := u.Detail(mockUser.ID, "")
 
 		assert.NoError(t, err)
 		assert.NotNil(t, userRow)
-		assert.Equal(t, 0, status)
 
 		mockRepo.AssertExpectations(t)
 	})
@@ -167,11 +159,10 @@ func TestServiceDetail(t *testing.T) {
 		mockRepo.On("GetByID", mock.AnythingOfType("string"), "").Return(nil, sql.ErrNoRows).Once()
 		u := user.NewService(log, mockRepo)
 
-		userRow, status, err := u.Detail(mockUser.ID, "")
+		userRow, err := u.Detail(mockUser.ID, "")
 
 		assert.Error(t, err)
 		assert.Nil(t, userRow)
-		assert.Equal(t, http.StatusNotFound, status)
 
 		mockRepo.AssertExpectations(t)
 	})
@@ -180,11 +171,10 @@ func TestServiceDetail(t *testing.T) {
 		mockRepo.On("GetByID", mock.AnythingOfType("string"), "").Return(nil, errors.New("Unexpected database error")).Once()
 		u := user.NewService(log, mockRepo)
 
-		userRow, status, err := u.Detail(mockUser.ID, "")
+		userRow, err := u.Detail(mockUser.ID, "")
 
 		assert.Error(t, err)
 		assert.Nil(t, userRow)
-		assert.Equal(t, http.StatusInternalServerError, status)
 
 		mockRepo.AssertExpectations(t)
 	})
@@ -217,12 +207,11 @@ func TestServiceList(t *testing.T) {
 		mockRepo.On("Count", filter, deletedNull).Return(1, nil).Once()
 		u := user.NewService(log, mockRepo)
 
-		users, count, status, err := u.List(filter, filter, deletedNull, orderBy, model.UserSelectField)
+		users, count, err := u.List(filter, filter, deletedNull, orderBy, model.UserSelectField)
 
 		assert.NoError(t, err)
 		assert.NotNil(t, users)
 		assert.Equal(t, 1, count)
-		assert.Equal(t, 0, status)
 
 		mockRepo.AssertExpectations(t)
 	})
@@ -232,12 +221,11 @@ func TestServiceList(t *testing.T) {
 
 		u := user.NewService(log, mockRepo)
 
-		users, count, status, err := u.List(filter, filter, deletedNull, orderBy, model.UserSelectField)
+		users, count, err := u.List(filter, filter, deletedNull, orderBy, model.UserSelectField)
 
 		assert.Error(t, err)
 		assert.Nil(t, users)
 		assert.Equal(t, 0, count)
-		assert.Equal(t, http.StatusInternalServerError, status)
 
 		mockRepo.AssertExpectations(t)
 	})
@@ -248,12 +236,11 @@ func TestServiceList(t *testing.T) {
 
 		u := user.NewService(log, mockRepo)
 
-		users, count, status, err := u.List(filter, filter, deletedNull, orderBy, model.UserSelectField)
+		users, count, err := u.List(filter, filter, deletedNull, orderBy, model.UserSelectField)
 
 		assert.Error(t, err)
 		assert.Nil(t, users)
 		assert.Equal(t, 0, count)
-		assert.Equal(t, http.StatusInternalServerError, status)
 
 		mockRepo.AssertExpectations(t)
 	})
@@ -282,11 +269,10 @@ func TestServiceUpdate(t *testing.T) {
 		mockRepo.On("Update", mockUser).Return(mockUser, nil).Once()
 		u := user.NewService(log, mockRepo)
 
-		userRow, status, err := u.Update(reqUser, mockUser.ID)
+		userRow, err := u.Update(reqUser, mockUser.ID)
 
 		assert.NoError(t, err)
 		assert.NotNil(t, userRow)
-		assert.Equal(t, 0, status)
 
 		mockRepo.AssertExpectations(t)
 	})
@@ -295,11 +281,10 @@ func TestServiceUpdate(t *testing.T) {
 		mockRepo.On("Update", mockUser).Return(nil, errors.New("Unexpected database error")).Once()
 		u := user.NewService(log, mockRepo)
 
-		userRow, status, err := u.Update(reqUser, mockUser.ID)
+		userRow, err := u.Update(reqUser, mockUser.ID)
 
 		assert.Error(t, err)
 		assert.Nil(t, userRow)
-		assert.Equal(t, http.StatusInternalServerError, status)
 
 		mockRepo.AssertExpectations(t)
 	})

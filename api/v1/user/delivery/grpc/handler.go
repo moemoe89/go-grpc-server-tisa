@@ -17,9 +17,9 @@ import (
 	"math"
 	"strings"
 
+	ts "github.com/golang/protobuf/ptypes/timestamp"
 	"github.com/moemoe89/go-helpers"
 	"github.com/rs/xid"
-	ts "github.com/golang/protobuf/ptypes/timestamp"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 )
@@ -48,7 +48,7 @@ func (s *server) Create(c context.Context, r *usrProto.UserCreateReq) (*usrProto
 		return nil, errors.New(errs[0])
 	}
 
-	user, _, err := s.svc.Create(req)
+	user, err := s.svc.Create(req)
 	if err != nil {
 		return nil, err
 	}
@@ -74,7 +74,7 @@ func (s *server) Create(c context.Context, r *usrProto.UserCreateReq) (*usrProto
 	return resp, nil
 }
 
-func(s *server) List(c context.Context, r *usrProto.UsersReq) (*usrProto.Users, error) {
+func (s *server) List(c context.Context, r *usrProto.UsersReq) (*usrProto.Users, error) {
 	userModel := model.UserModel{}
 
 	offset, perPage, showPage, err := helpers.PaginationSetter(r.GetPerPage(), r.GetPage())
@@ -134,7 +134,7 @@ func(s *server) List(c context.Context, r *usrProto.UsersReq) (*usrProto.Users, 
 		}
 	}
 
-	usersRaw, count, _, err := s.svc.List(filter, filterCount, where, orderBy, selectField)
+	usersRaw, count, err := s.svc.List(filter, filterCount, where, orderBy, selectField)
 	if err != nil {
 		return nil, err
 	}
@@ -175,10 +175,9 @@ func(s *server) List(c context.Context, r *usrProto.UsersReq) (*usrProto.Users, 
 	return resp, nil
 }
 
-
-func(s *server) Detail(c context.Context, r *usrProto.UserIDReq) (*usrProto.User, error) {
+func (s *server) Detail(c context.Context, r *usrProto.UserIDReq) (*usrProto.User, error) {
 	id := r.GetId()
-	user, _, err := s.svc.Detail(id, model.UserSelectField)
+	user, err := s.svc.Detail(id, model.UserSelectField)
 	if err != nil {
 		return nil, err
 	}
@@ -204,10 +203,9 @@ func(s *server) Detail(c context.Context, r *usrProto.UserIDReq) (*usrProto.User
 	return resp, nil
 }
 
-
-func(s *server) Update(c context.Context,  r*usrProto.UserUpdateReq) (*usrProto.User, error) {
+func (s *server) Update(c context.Context, r *usrProto.UserUpdateReq) (*usrProto.User, error) {
 	id := r.GetId()
-	user, _, err := s.svc.Detail(id, "id")
+	user, err := s.svc.Detail(id, "id")
 	if err != nil {
 		return nil, err
 	}
@@ -223,7 +221,7 @@ func(s *server) Update(c context.Context,  r*usrProto.UserUpdateReq) (*usrProto.
 		return nil, errors.New(errs[0])
 	}
 
-	user, _, err = s.svc.Update(req, id)
+	user, err = s.svc.Update(req, id)
 	if err != nil {
 		return nil, err
 	}
@@ -249,10 +247,9 @@ func(s *server) Update(c context.Context,  r*usrProto.UserUpdateReq) (*usrProto.
 	return resp, nil
 }
 
-
-func(s *server) Delete(c context.Context,  r *usrProto.UserIDReq) (*usrProto.UserIDReq, error) {
+func (s *server) Delete(c context.Context, r *usrProto.UserIDReq) (*usrProto.UserIDReq, error) {
 	id := r.GetId()
-	_, err := s.svc.Delete(id)
+	err := s.svc.Delete(id)
 	if err != nil {
 		return nil, err
 	}
